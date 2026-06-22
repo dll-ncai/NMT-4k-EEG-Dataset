@@ -138,7 +138,6 @@ This notebook describes the recording cohort and produces demographic and durati
 - Recording duration distribution
 - Dataset-level descriptive figures
 
-Some cells contain earlier plotting experiments. The cohort and duration sections are the main components used for the current dataset description.
 
 ### `02_data_validation/validation_data.ipynb`
 
@@ -175,7 +174,6 @@ This notebook performs signal characterization, event-level analysis, and explor
 - Exploratory recording-level feature extraction
 - Exploratory logistic regression classification
 
-The exploratory classifier in this notebook should not be treated as the final benchmark reported in the manuscript unless it is run using the predefined training and evaluation partitions.
 
 ### `03_technical_validation/Paper_Stats.ipynb`
 
@@ -192,7 +190,6 @@ This notebook produces technical validation statistics and publication figures. 
 - Relative band power summaries
 - Signal quality figure generation
 
-The label mapping constants in this notebook should remain synchronized with the final released 12-label taxonomy.
 
 ### `04_manuscript_outputs/final_paper_plot.ipynb`
 
@@ -208,7 +205,6 @@ This notebook assembles the final figures, validation summaries, and table value
 - LaTeX table row generation
 - Final null and file checks
 
-The released reports use `.txt`. Any older cells that still check for `.docx` reports should be updated before rerunning the notebook.
 
 ## Scripts
 
@@ -394,11 +390,12 @@ source .venv/bin/activate
 
 Install the main dependencies:
 
-```bash
-pip install numpy pandas matplotlib seaborn scipy scikit-learn mne tqdm openpyxl jupyter
-```
+Install the required Python packages using the provided requirements.txt file:
 
-The standard library modules used by the scripts include `pathlib`, `hashlib`, `shutil`, `re`, `math`, and `collections`.
+pip install --upgrade pip
+pip install -r requirements.txt
+
+The main dependencies include NumPy, pandas, Matplotlib, seaborn, SciPy, scikit-learn, MNE-Python, tqdm, openpyxl, and Jupyter.
 
 ## Configuration
 
@@ -570,9 +567,15 @@ The Full EDF Viewer used during clinical review and annotation is available at:
 
 [https://dll-ncai.github.io/full_edf_viewer/](https://dll-ncai.github.io/full_edf_viewer/)
 
+
 ## License
 
-Dataset access conditions and licensing are provided on the Zenodo record. The code license should be stated in a repository-level `LICENSE` file before public redistribution or reuse.
+The source code, scripts, and notebooks in this repository are licensed under the [MIT License](LICENSE).
+
+Copyright (c) 2026 Deep Learning Lab - NCAI.
+
+The MIT License applies only to the software and documentation contained in this GitHub repository. The NMT-4K-EEG dataset is distributed separately through Zenodo. Dataset access and reuse are governed by the license and conditions provided on the [Zenodo record](https://doi.org/10.5281/zenodo.20757251).
+
 
 ## Contact
 
