@@ -1,16 +1,18 @@
-# NMT-4K-EEG Dataset
+# NMT-4K-EEG Dataset Code and Validation Repository
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20757251.svg)](https://doi.org/10.5281/zenodo.20757251)
+[![Dataset DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20757251.svg)](https://doi.org/10.5281/zenodo.20757251)
+[![Code DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20830355.svg)](https://doi.org/10.5281/zenodo.20830355)
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
 ![Jupyter](https://img.shields.io/badge/Jupyter-Notebooks-F37626?logo=jupyter&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-This repository contains the code, notebooks, validation routines, and saved analysis outputs used to curate and describe **NMT-4K-EEG**. NMT-4K-EEG is a multimodal clinical electroencephalography dataset collected during routine hospital practice in Pakistan.
+This repository contains the code, notebooks, validation routines, and saved analysis outputs used to curate, validate, package, and describe **NMT-4K-EEG**, a multimodal clinical electroencephalography dataset collected during routine hospital practice in Pakistan.
 
-The dataset contains continuous EEG recordings, expert event annotations for abnormal recordings, anonymized clinical reports, and a predefined subject-wise training and evaluation split. The full dataset is available from Zenodo under version 1.0.
+The dataset contains continuous EEG recordings, expert event annotations for abnormal recordings, anonymized clinical EEG reports, and a predefined subject-wise training and evaluation split. The dataset itself is distributed separately through Zenodo. A fixed archival release of this code and validation repository is also available through Zenodo for reproducible citation.
 
-**Dataset:** [https://doi.org/10.5281/zenodo.20757251](https://doi.org/10.5281/zenodo.20757251)
-
-**Full EDF Viewer:** [https://dll-ncai.github.io/full_edf_viewer/](https://dll-ncai.github.io/full_edf_viewer/)
+- **Dataset record:** [https://doi.org/10.5281/zenodo.20757251](https://doi.org/10.5281/zenodo.20757251)
+- **Code and validation repository archive:** [https://doi.org/10.5281/zenodo.20830355](https://doi.org/10.5281/zenodo.20830355)
+- **Full EDF Viewer:** [https://dll-ncai.github.io/full_edf_viewer/](https://dll-ncai.github.io/full_edf_viewer/)
 
 ## Dataset at a glance
 
@@ -21,7 +23,7 @@ The dataset contains continuous EEG recordings, expert event annotations for abn
 | Training partition | 3,473 recordings, including 2,787 normal and 686 abnormal |
 | Evaluation partition | 1,000 recordings, including 540 normal and 460 abnormal |
 | Signal format | European Data Format, `.edf` |
-| Channels | 19 scalp channels using the international 10-20 system |
+| Channels | 19 scalp channels using the International 10-20 system |
 | Sampling frequency | 200 Hz |
 | Acquisition resolution | Native 12-bit acquisition |
 | Event annotations | 72,754 expert-labeled events for abnormal recordings |
@@ -45,7 +47,7 @@ Recordings interpreted as abnormal include annotation CSV files. Each event cont
 
 | Field | Description |
 |---|---|
-| `Gender` | Recorded gender field from the source record |
+| `Gender` | Recorded gender field from the source clinical record |
 | `Age` | Subject age at the time of acquisition |
 | `File Start` | Recording clock start time |
 | `Start time` | Event onset clock time |
@@ -80,7 +82,7 @@ The same convention is used for `ffh` identifiers. The CSV file is present only 
 ## Repository structure
 
 ```text
-NMT-4K-EEG-DATASET/
+NMT-4K-EEG-Dataset/
 ├── notebooks/
 │   ├── 01_dataset_characterization/
 │   │   ├── Abnormality_stats.ipynb
@@ -138,7 +140,6 @@ This notebook describes the recording cohort and produces demographic and durati
 - Recording duration distribution
 - Dataset-level descriptive figures
 
-
 ### `02_data_validation/validation_data.ipynb`
 
 This notebook performs EDF and annotation consistency checks. It includes:
@@ -148,7 +149,7 @@ This notebook performs EDF and annotation consistency checks. It includes:
 - Recording duration extraction
 - Channel inventory checks
 - Missing and additional channel summaries
-- EDF to annotation file linkage
+- EDF-to-annotation file linkage
 - Event onset and offset parsing
 - Event timing validation
 - Annotation channel validation
@@ -174,7 +175,6 @@ This notebook performs signal characterization, event-level analysis, and explor
 - Exploratory recording-level feature extraction
 - Exploratory logistic regression classification
 
-
 ### `03_technical_validation/Paper_Stats.ipynb`
 
 This notebook produces technical validation statistics and publication figures. It includes:
@@ -190,10 +190,9 @@ This notebook produces technical validation statistics and publication figures. 
 - Relative band power summaries
 - Signal quality figure generation
 
-
 ### `04_manuscript_outputs/final_paper_plot.ipynb`
 
-This notebook assembles the final figures, validation summaries, and table values used in the Data Descriptor. It includes:
+This notebook assembles final figures, validation summaries, and table values used in the Data Descriptor. It includes:
 
 - Age and gender visualization
 - Recording duration visualization
@@ -204,7 +203,6 @@ This notebook assembles the final figures, validation summaries, and table value
 - Clinical family plots
 - LaTeX table row generation
 - Final null and file checks
-
 
 ## Scripts
 
@@ -311,17 +309,17 @@ The `Outputs` directory contains saved tables, validation reports, and figures g
 
 | Directory | Contents |
 |---|---|
-| `Outputs/figures/` | Main manuscript figures, including demographic, duration, signal quality, and event quality control plots |
+| `Outputs/figures/` | Main manuscript figures, including demographic, duration, signal quality, and event quality-control plots |
 | `Outputs/nmt4k_analysis_results/` | Exploratory signal metrics, feature tables, event density plots, and feature importance outputs |
 | `Outputs/nmt4k_event_level_stats/` | Event table summaries, event duration statistics, event burden tables, and event-level plots |
 | `Outputs/nmt4k_event_stats_out/` | Canonical and merged event counts, duration statistics, events per file, and related figures |
 | `Outputs/nmt4k_signal_quality/` | Channel-level and recording-level signal quality tables and spectral figures |
 | `Outputs/nmt4k_step1_out/` | Initial EDF integrity summary |
-| `Outputs/nmt4k_validation_out/` | EDF to CSV linkage, annotation validation, label distributions, channel counts, and invalid row reports |
+| `Outputs/nmt4k_validation_out/` | EDF-to-CSV linkage, annotation validation, label distributions, channel counts, and invalid row reports |
 | `Outputs/Stats Ouput/` | Consolidated technical validation statistics |
 | `Outputs/Validation Report/` | EDF validation report and file-level status information |
 
-Saved outputs are included for transparency and inspection. Some are intermediate artifacts from earlier notebook executions. Regenerate the outputs with the current dataset release before using them as final numerical results.
+Saved outputs are included for transparency and inspection. Some outputs are intermediate artifacts from earlier notebook executions. Regenerate the outputs with the current dataset release before using them as final numerical results.
 
 ## Example figures
 
@@ -388,19 +386,19 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-Install the main dependencies:
+Install the required Python packages using the provided `requirements.txt` file:
 
-Install the required Python packages using the provided requirements.txt file:
-
+```bash
 pip install --upgrade pip
 pip install -r requirements.txt
+```
 
 The main dependencies include NumPy, pandas, Matplotlib, seaborn, SciPy, scikit-learn, MNE-Python, tqdm, openpyxl, and Jupyter.
 
 ## Configuration
 
 > [!IMPORTANT]
-> The scripts and notebooks currently contain absolute paths from the original curation environment. Update all dataset root and output paths before running the code.
+> The scripts and notebooks may contain absolute paths from the original curation environment. Update all dataset root and output paths before running the code.
 
 The main path variables include:
 
@@ -449,7 +447,7 @@ The curation and packaging scripts require access to the original source archive
 3. Update the root path variables in the required notebook.
 4. Install the Python dependencies.
 5. Run the validation or analysis notebook from top to bottom.
-6. Save regenerated outputs in a separate directory to avoid overwriting the included reference outputs.
+6. Save regenerated outputs in a separate directory to avoid overwriting included reference outputs.
 
 ## Reproducibility notes
 
@@ -525,33 +523,9 @@ The dataset is deposited on Zenodo:
 
 Please consult the Zenodo landing page for the current access conditions, dataset license, and usage restrictions.
 
-## Citation
-
-Please cite the dataset when using NMT-4K-EEG. The citation exported by Zenodo should be treated as the authoritative dataset citation.
-
-A minimal BibTeX entry is provided below:
-
-```bibtex
-@dataset{masood_nmt4keeg_2026,
-  author    = {Masood, Hira and Shafait, Faisal and Bajwa, Muhammad Naseer and Malik, Muhammad Imran and Shafait, Saima and Khan, Hassan Aqeel},
-  title     = {NMT-4K-EEG},
-  year      = {2026},
-  publisher = {Zenodo},
-  version   = {1.0},
-  doi       = {10.5281/zenodo.20757251},
-  url       = {https://doi.org/10.5281/zenodo.20757251}
-}
-```
-
-The accompanying Data Descriptor is titled:
-
-> **Electroencephalography recordings from routine hospital care with event annotations and clinical reports**
-
-Add the final journal citation here after publication.
-
 ## Code availability
 
-This repository provides the custom code used for:
+This GitHub repository provides the custom code used for:
 
 - Dataset curation and split creation
 - Release packaging
@@ -563,23 +537,66 @@ This repository provides the custom code used for:
 - Exploratory baseline analysis
 - SHA-256 checksum generation
 
+A fixed archival release of this code and validation repository has been deposited on Zenodo:
+
+- **Repository:** Zenodo
+- **Version:** v1.0.0
+- **DOI:** [10.5281/zenodo.20830355](https://doi.org/10.5281/zenodo.20830355)
+- **Landing page:** [https://zenodo.org/records/20830355](https://zenodo.org/records/20830355)
+
 The Full EDF Viewer used during clinical review and annotation is available at:
 
 [https://dll-ncai.github.io/full_edf_viewer/](https://dll-ncai.github.io/full_edf_viewer/)
 
+## Citation
+
+Please cite the dataset when using NMT-4K-EEG. Please also cite the code and validation repository when using or referring to the scripts, notebooks, validation workflow, or reproduced figures. The citation exported by each Zenodo record should be treated as the authoritative citation.
+
+### Dataset citation
+
+```bibtex
+@dataset{masood_nmt4keeg_2026,
+  author    = {Masood, Hira and Shafait, Faisal and Bajwa, Muhammad Naseer and Malik, Muhammad Imran and Shafait, Saima and Khan, Hassan Aqeel},
+  title     = {{NMT-4K-EEG}},
+  year      = {2026},
+  publisher = {Zenodo},
+  version   = {1.0},
+  doi       = {10.5281/zenodo.20757251},
+  url       = {https://doi.org/10.5281/zenodo.20757251}
+}
+```
+
+### Code and validation repository citation
+
+```bibtex
+@software{masood2026nmt4keegcode,
+  author    = {Masood, Hira and Shafait, Faisal and Bajwa, Muhammad Naseer and Malik, Muhammad Imran and Shafait, Saima and Khan, Hassan Aqeel},
+  title     = {{NMT-4K-EEG Dataset Code and Validation Repository}},
+  year      = {2026},
+  publisher = {Zenodo},
+  version   = {v1.0.0},
+  doi       = {10.5281/zenodo.20830355},
+  url       = {https://doi.org/10.5281/zenodo.20830355}
+}
+```
+
+The accompanying Data Descriptor is titled:
+
+> **Electroencephalography recordings from routine hospital care with event annotations and clinical reports**
+
+Add the final journal citation here after publication.
 
 ## License
 
-The source code, scripts, and notebooks in this repository are licensed under the [MIT License](LICENSE).
+The source code, scripts, notebooks, and documentation in this repository are licensed under the [MIT License](LICENSE).
 
 Copyright (c) 2026 Deep Learning Lab - NCAI.
 
-The MIT License applies only to the software and documentation contained in this GitHub repository. The NMT-4K-EEG dataset is distributed separately through Zenodo. Dataset access and reuse are governed by the license and conditions provided on the [Zenodo record](https://doi.org/10.5281/zenodo.20757251).
-
+The MIT License applies only to the software and documentation contained in this GitHub repository and the archived code release. The NMT-4K-EEG dataset is distributed separately through Zenodo. Dataset access and reuse are governed by the license and conditions provided on the [dataset Zenodo record](https://doi.org/10.5281/zenodo.20757251).
 
 ## Contact
 
-For questions about the dataset or manuscript, please open a GitHub issue or contact:
+For questions about the dataset, code, or manuscript, please open a GitHub issue or contact:
 
 - **Faisal Shafait:** [faisal.shafait@seecs.edu.pk](mailto:faisal.shafait@seecs.edu.pk)
 - **Hira Masood:** [hira.masood@seecs.edu.pk](mailto:hira.masood@seecs.edu.pk)
