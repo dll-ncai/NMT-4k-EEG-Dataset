@@ -1,6 +1,6 @@
 # NMT-4K-EEG Dataset Code and Validation Repository
 
-[![Dataset DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20757251.svg)](https://doi.org/10.5281/zenodo.20757251)
+[![Dataset DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21041582.svg)](https://doi.org/10.5281/zenodo.21041582)
 [![Code DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20830355.svg)](https://doi.org/10.5281/zenodo.20830355)
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
 ![Jupyter](https://img.shields.io/badge/Jupyter-Notebooks-F37626?logo=jupyter&logoColor=white)
@@ -10,7 +10,7 @@ This repository contains the code, notebooks, validation routines, and saved ana
 
 The dataset contains continuous EEG recordings, expert event annotations for abnormal recordings, anonymized clinical EEG reports, and a predefined subject-wise training and evaluation split. The dataset itself is distributed separately through Zenodo. A fixed archival release of this code and validation repository is also available through Zenodo for reproducible citation.
 
-- **Dataset record:** [https://doi.org/10.5281/zenodo.20757251](https://doi.org/10.5281/zenodo.20757251)
+- **Dataset record:** [https://doi.org/10.5281/zenodo.21041582](https://doi.org/10.5281/zenodo.21041582)
 - **Code and validation repository archive:** [https://doi.org/10.5281/zenodo.20830355](https://doi.org/10.5281/zenodo.20830355)
 - **Full EDF Viewer:** [https://dll-ncai.github.io/full_edf_viewer/](https://dll-ncai.github.io/full_edf_viewer/)
 
@@ -18,9 +18,9 @@ The dataset contains continuous EEG recordings, expert event annotations for abn
 
 | Item | Description |
 |---|---|
-| Total recordings | 4,473 routine clinical EEG recordings from unique subjects |
-| Recording-level classes | 3,327 normal and 1,146 abnormal |
-| Training partition | 3,473 recordings, including 2,787 normal and 686 abnormal |
+| Total recordings | 4,500 routine clinical EEG recordings from unique subjects |
+| Recording-level classes | 3,336 normal and 1,164 abnormal |
+| Training partition | 3,500 recordings, including 2,796 normal and 704 abnormal |
 | Evaluation partition | 1,000 recordings, including 540 normal and 460 abnormal |
 | Signal format | European Data Format, `.edf` |
 | Channels | 19 scalp channels using the International 10-20 system |
@@ -29,7 +29,7 @@ The dataset contains continuous EEG recordings, expert event annotations for abn
 | Event annotations | 72,754 expert-labeled events for abnormal recordings |
 | Annotation format | Comma-separated value files, `.csv` |
 | Event taxonomy | 12 canonical labels organized into three clinical families |
-| Clinical reports | 4,473 anonymized reports in plain text, `.txt` |
+| Clinical reports | 4,500 anonymized reports in plain text, `.txt` |
 | Subject age | Six years and older |
 | Data split | Fixed subject-wise training and evaluation partitions |
 
@@ -227,11 +227,11 @@ This script builds the recording-level manifest and creates the predefined split
 The exact target counts are:
 
 ```text
-Training normal:       2,787
-Training abnormal:       686
+Training normal:       2,796
+Training abnormal:       704
 Evaluation normal:       540
 Evaluation abnormal:     460
-Total:                 4,473
+Total:                 4,500
 ```
 
 Main outputs include:
@@ -517,9 +517,9 @@ Direct identifiers were removed from EDF headers, file names, annotation files, 
 The dataset is deposited on Zenodo:
 
 - **Repository:** Zenodo
-- **Version:** 1.0
-- **DOI:** [10.5281/zenodo.20757251](https://doi.org/10.5281/zenodo.20757251)
-- **Landing page:** [https://zenodo.org/records/20757251](https://zenodo.org/records/20757251)
+- **Version:** 1.1
+- **DOI:** [10.5281/zenodo.21041582](https://doi.org/10.5281/zenodo.21041582)
+- **Landing page:** [https://zenodo.org/records/21041582](https://zenodo.org/records/21041582)
 
 Please consult the Zenodo landing page for the current access conditions, dataset license, and usage restrictions.
 
@@ -580,11 +580,6 @@ Please cite the dataset when using NMT-4K-EEG. Please also cite the code and val
 }
 ```
 
-The accompanying Data Descriptor is titled:
-
-> **Electroencephalography recordings from routine hospital care with event annotations and clinical reports**
-
-Add the final journal citation here after publication.
 
 ## License
 
@@ -592,7 +587,7 @@ The source code, scripts, notebooks, and documentation in this repository are li
 
 Copyright (c) 2026 Deep Learning Lab - NCAI.
 
-The MIT License applies only to the software and documentation contained in this GitHub repository and the archived code release. The NMT-4K-EEG dataset is distributed separately through Zenodo. Dataset access and reuse are governed by the license and conditions provided on the [dataset Zenodo record](https://doi.org/10.5281/zenodo.20757251).
+The MIT License applies only to the software and documentation contained in this GitHub repository and the archived code release. The NMT-4K-EEG dataset is distributed separately through Zenodo. Dataset access and reuse are governed by the license and conditions provided on the [dataset Zenodo record](https://doi.org/10.5281/zenodo.21041582).
 
 ## Contact
 
