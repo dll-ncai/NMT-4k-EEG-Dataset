@@ -557,7 +557,7 @@ Please cite the dataset when using NMT-4K-EEG. Please also cite the code and val
 ```bibtex
 @dataset{masood_nmt4keeg_2026,
   author    = {Masood, Hira and Shafait, Faisal and Bajwa, Muhammad Naseer and Malik, Muhammad Imran and Shafait, Saima and Khan, Hassan Aqeel},
-  title     = {{NMT-4K-EEG}},
+  title     = {{NMT-4K-EEG: A Curated Clinical EEG Dataset for Normal and Abnormal EEG Detection}},
   year      = {2026},
   publisher = {Zenodo},
   version   = {1.1},
