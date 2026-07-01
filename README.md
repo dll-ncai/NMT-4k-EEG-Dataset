@@ -560,9 +560,9 @@ Please cite the dataset when using NMT-4K-EEG. Please also cite the code and val
   title     = {{NMT-4K-EEG}},
   year      = {2026},
   publisher = {Zenodo},
-  version   = {1.0},
-  doi       = {10.5281/zenodo.20757251},
-  url       = {https://doi.org/10.5281/zenodo.20757251}
+  version   = {1.1},
+  doi       = {10.5281/zenodo.21041582},
+  url       = {https://doi.org/10.5281/zenodo.21041582}
 }
 ```
 
