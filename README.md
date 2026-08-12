@@ -1,6 +1,6 @@
 # NMT-4K-EEG Dataset Code and Validation Repository
 
-[![Dataset DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21041582.svg)](https://doi.org/10.5281/zenodo.21041582)
+[![Dataset DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21405022.svg)](https://doi.org/10.5281/zenodo.21405022)
 [![Code DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20830355.svg)](https://doi.org/10.5281/zenodo.20830355)
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
 ![Jupyter](https://img.shields.io/badge/Jupyter-Notebooks-F37626?logo=jupyter&logoColor=white)
@@ -10,7 +10,7 @@ This repository contains the code, notebooks, validation routines, and saved ana
 
 The dataset contains continuous EEG recordings, expert event annotations for abnormal recordings, anonymized clinical EEG reports, and a predefined subject-wise training and evaluation split. The dataset itself is distributed separately through Zenodo. A fixed archival release of this code and validation repository is also available through Zenodo for reproducible citation.
 
-- **Dataset record:** [https://doi.org/10.5281/zenodo.21041582](https://doi.org/10.5281/zenodo.21041582)
+- **Dataset record:** [https://doi.org/10.5281/zenodo.21405022](https://doi.org/10.5281/zenodo.21405022)
 - **Code and validation repository archive:** [https://doi.org/10.5281/zenodo.20830355](https://doi.org/10.5281/zenodo.20830355)
 - **Full EDF Viewer:** [https://dll-ncai.github.io/full_edf_viewer/](https://dll-ncai.github.io/full_edf_viewer/)
 
@@ -517,9 +517,9 @@ Direct identifiers were removed from EDF headers, file names, annotation files, 
 The dataset is deposited on Zenodo:
 
 - **Repository:** Zenodo
-- **Version:** 1.1
-- **DOI:** [10.5281/zenodo.21041582](https://doi.org/10.5281/zenodo.21041582)
-- **Landing page:** [https://zenodo.org/records/21041582](https://zenodo.org/records/21041582)
+- **Version:** 1.2
+- **DOI:** [10.5281/zenodo.21405022](https://doi.org/10.5281/zenodo.21405022)
+- **Landing page:** [https://zenodo.org/records/21405022](https://zenodo.org/records/21405022)
 
 Please consult the Zenodo landing page for the current access conditions, dataset license, and usage restrictions.
 
@@ -560,9 +560,9 @@ Please cite the dataset when using NMT-4K-EEG. Please also cite the code and val
   title     = {{NMT-4K-EEG: A Curated Clinical EEG Dataset for Normal and Abnormal EEG Detection}},
   year      = {2026},
   publisher = {Zenodo},
-  version   = {1.1},
-  doi       = {10.5281/zenodo.21041582},
-  url       = {https://doi.org/10.5281/zenodo.21041582}
+  version   = {1.2},
+  doi       = {10.5281/zenodo.21405022},
+  url       = {https://doi.org/10.5281/zenodo.21405022}
 }
 ```
 
@@ -587,7 +587,7 @@ The source code, scripts, notebooks, and documentation in this repository are li
 
 Copyright (c) 2026 Deep Learning Lab - NCAI.
 
-The MIT License applies only to the software and documentation contained in this GitHub repository and the archived code release. The NMT-4K-EEG dataset is distributed separately through Zenodo. Dataset access and reuse are governed by the license and conditions provided on the [dataset Zenodo record](https://doi.org/10.5281/zenodo.21041582).
+The MIT License applies only to the software and documentation contained in this GitHub repository and the archived code release. The NMT-4K-EEG dataset is distributed separately through Zenodo. Dataset access and reuse are governed by the license and conditions provided on the [dataset Zenodo record](https://doi.org/10.5281/zenodo.21405022).
 
 ## Contact
 
