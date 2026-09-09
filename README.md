@@ -26,9 +26,9 @@ The dataset contains continuous EEG recordings, expert event annotations for abn
 | Channels | 19 scalp channels using the International 10-20 system |
 | Sampling frequency | 200 Hz |
 | Acquisition resolution | Native 12-bit acquisition |
-| Event annotations | 72,754 expert-labeled events for abnormal recordings |
+| Event annotations | 77,461 expert-verified annotations for abnormal recordings |
 | Annotation format | Comma-separated value files, `.csv` |
-| Event taxonomy | 12 canonical labels organized into three clinical families |
+| Event taxonomy | 10 canonical labels organized into four broader annotation families |
 | Clinical reports | 4,500 anonymized reports in plain text, `.txt` |
 | Subject age | Six years and older |
 | Data split | Fixed subject-wise training and evaluation partitions |
@@ -43,19 +43,19 @@ Each recording is provided as an EDF file. The signals retain the original acqui
 
 ### Event-level annotations
 
-Recordings interpreted as abnormal include annotation CSV files. Each event contains:
+Recordings interpreted as abnormal include annotation CSV files. Each released annotation contains:
 
 | Field | Description |
 |---|---|
 | `Gender` | Recorded gender field from the source clinical record |
 | `Age` | Subject age at the time of acquisition |
 | `File Start` | Recording clock start time |
-| `Start time` | Event onset clock time |
-| `End time` | Event offset clock time |
-| `Channel names` | Channels in which the event was most prominent |
-| `Comment` | Clinical event label |
+| `Start time` | Annotation onset clock time |
+| `End time` | Annotation offset clock time |
+| `Channel names` | Channels in which the annotated morphology was most prominent |
+| `Comment` | Normalized clinical annotation label |
 
-Normal recordings do not contain event annotation CSV files. Temporal overlap between events is permitted because different EEG patterns may occur at the same time or across different channel subsets.
+Normal recordings do not contain event annotation CSV files. Temporal overlap between annotations is permitted because different EEG patterns may occur at the same time or across different channel subsets.
 
 ### Clinical reports
 
@@ -118,12 +118,12 @@ NMT-4K-EEG-Dataset/
 
 ### `01_dataset_characterization/Abnormality_stats.ipynb`
 
-This notebook analyzes abnormal event labels and recording-level abnormality patterns. It includes:
+This notebook analyzes abnormal annotation labels and recording-level abnormality patterns. It includes:
 
 - Normalization of free-text clinical labels
-- Mapping of label variants to canonical event labels
-- Event frequency by annotation row
-- Event frequency by recording
+- Mapping of label variants to canonical annotation labels
+- Annotation frequency by annotation row
+- Annotation frequency by recording
 - Single and multiple abnormality combinations
 - Label co-occurrence summaries
 - Age and gender distributions across abnormality groups
@@ -150,8 +150,8 @@ This notebook performs EDF and annotation consistency checks. It includes:
 - Channel inventory checks
 - Missing and additional channel summaries
 - EDF-to-annotation file linkage
-- Event onset and offset parsing
-- Event timing validation
+- Annotation onset and offset parsing
+- Annotation timing validation
 - Annotation channel validation
 - Canonical label mapping
 - Invalid row classification
@@ -161,7 +161,7 @@ The notebook writes detailed validation tables to `Outputs/nmt4k_step1_out/` and
 
 ### `03_technical_validation/data_analysis_paper.ipynb`
 
-This notebook performs signal characterization, event-level analysis, and exploratory baseline analysis. It includes:
+This notebook performs signal characterization, annotation-level analysis, and exploratory baseline analysis. It includes:
 
 - Welch power spectral density estimation
 - Relative EEG band powers
@@ -169,9 +169,9 @@ This notebook performs signal characterization, event-level analysis, and explor
 - Signal quality summary metrics
 - Flat channel summaries
 - Interchannel signal statistics
-- Event count and duration analysis
-- Events per recording
-- Event density summaries
+- Annotation count and duration analysis
+- Annotations per recording
+- Annotation density summaries
 - Exploratory recording-level feature extraction
 - Exploratory logistic regression classification
 
@@ -199,8 +199,8 @@ This notebook assembles final figures, validation summaries, and table values us
 - EDF integrity summaries
 - Annotation consistency summaries
 - Signal quality figure generation
-- Event duration and burden figures
-- Clinical family plots
+- Annotation duration and density figures
+- Annotation family plots
 - LaTeX table row generation
 - Final null and file checks
 
@@ -309,17 +309,17 @@ The `Outputs` directory contains saved tables, validation reports, and figures g
 
 | Directory | Contents |
 |---|---|
-| `Outputs/figures/` | Main manuscript figures, including demographic, duration, signal quality, and event quality-control plots |
-| `Outputs/nmt4k_analysis_results/` | Exploratory signal metrics, feature tables, event density plots, and feature importance outputs |
-| `Outputs/nmt4k_event_level_stats/` | Event table summaries, event duration statistics, event burden tables, and event-level plots |
-| `Outputs/nmt4k_event_stats_out/` | Canonical and merged event counts, duration statistics, events per file, and related figures |
+| `Outputs/figures/` | Main manuscript figures, including demographic, duration, signal quality, and annotation quality-control plots |
+| `Outputs/nmt4k_analysis_results/` | Exploratory signal metrics, feature tables, annotation density plots, and feature importance outputs |
+| `Outputs/nmt4k_event_level_stats/` | Annotation table summaries, annotation duration statistics, annotation density tables, and annotation-level plots |
+| `Outputs/nmt4k_event_stats_out/` | Canonical and merged annotation counts, duration statistics, annotations per file, and related figures |
 | `Outputs/nmt4k_signal_quality/` | Channel-level and recording-level signal quality tables and spectral figures |
 | `Outputs/nmt4k_step1_out/` | Initial EDF integrity summary |
 | `Outputs/nmt4k_validation_out/` | EDF-to-CSV linkage, annotation validation, label distributions, channel counts, and invalid row reports |
 | `Outputs/Stats Ouput/` | Consolidated technical validation statistics |
 | `Outputs/Validation Report/` | EDF validation report and file-level status information |
 
-Saved outputs are included for transparency and inspection. Some outputs are intermediate artifacts from earlier notebook executions. Regenerate the outputs with the current dataset release before using them as final numerical results.
+Saved outputs are included for transparency and inspection. Some outputs are intermediate artifacts from earlier notebook executions. Regenerate the outputs with the current dataset release before using them as final numerical results. Final regenerated outputs should consistently report 77,461 annotations, 10 canonical labels, and four annotation families.
 
 ## Example figures
 
@@ -414,7 +414,7 @@ The released clinical reports are TXT files. For the final release workflow, rep
 REPORT_EXTENSIONS = {".txt"}
 ```
 
-The notebooks contain explicit label mapping dictionaries. These mappings should match the final 12-label taxonomy used in the released annotation files and manuscript.
+The notebooks contain explicit label mapping dictionaries. These mappings should match the final 10-label taxonomy used in the released annotation files and manuscript. For dataset-level summaries, the 10 canonical labels are grouped into four broader annotation families: Epileptiform, Non-epileptiform slowing, Other abnormal patterns, and Artifact. In final release analyses, `Spike and Delta` is consolidated into `Spike and Wave`, and rows labeled `Normal` are excluded from released annotation analyses.
 
 ## Recommended workflow
 
@@ -457,7 +457,7 @@ The curation and packaging scripts require access to the original source archive
 - Report preprocessing, montage handling, filtering, normalization, segmentation, and label mapping decisions.
 - Parse event clock times using a datetime library, especially for recordings that cross midnight.
 - Treat clinical reports as recording-level text and not as event-level ground truth.
-- Treat event counts as annotation density and not as a direct measure of clinical disease burden.
+- Treat annotation counts as annotation density and not as a direct measure of clinical disease burden.
 - The released EDF files are raw clinical recordings. Benchmark-specific filtering does not modify the released data.
 
 ## Data integrity verification
@@ -496,7 +496,7 @@ Important limitations include:
 - Activation procedures are not provided as separate structured annotations.
 - Reports provide recording-level context but are not temporally aligned with events.
 - Normal recordings do not have event annotation files.
-- Event labels reflect the released clinical taxonomy and may need task-specific aggregation.
+- Annotation labels reflect the released clinical taxonomy and may need task-specific aggregation.
 - The acquisition system and montage may differ from other public EEG datasets.
 - Baseline results validate technical usability and do not establish clinical performance.
 - The dataset is not intended for direct clinical diagnosis or deployment without further validation.
