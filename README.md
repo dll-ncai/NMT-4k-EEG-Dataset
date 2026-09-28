@@ -906,17 +906,21 @@ Direct identifiers were removed from EDF headers, file names, annotation files, 
 
 NMT-4K-EEG contains **de-identified clinical human data** and is distributed under **controlled access**.
 
-- **Dataset record:** [https://doi.org/10.5281/zenodo.21405022](https://doi.org/10.5281/zenodo.21405022)
+- **Dataset record:** https://doi.org/10.5281/zenodo.21405022
 - **Dataset version:** 1.2
-- **Public DUA:** [https://zenodo.org/records/23009612](https://zenodo.org/records/23009612)
-- **DUA DOI:** [https://doi.org/10.5281/zenodo.23009612](https://doi.org/10.5281/zenodo.23009612)
+- **Data Usage Agreement:** https://doi.org/10.5281/zenodo.23009612
+- **DUA version:** 1.0
 
-The Zenodo dataset record and metadata remain publicly accessible, while the clinical dataset files are restricted. Prospective users must submit an access request through Zenodo and agree to the **NMT-4K-EEG Data Usage Agreement (DUA), version 1.0** before access can be granted.
+The Zenodo dataset record and its metadata remain publicly accessible, while access to the clinical dataset files is restricted.
 
-The DUA defines the conditions for responsible reuse, including restrictions on participant re-identification and unauthorized redistribution and requirements for appropriate data-security safeguards.
+Prospective users must submit an access request through Zenodo and agree to the **NMT-4K-EEG Data Usage Agreement (DUA), version 1.0**, before access to the dataset files can be granted.
+
+Access requests are manually reviewed by the dataset custodians. Access is granted following verification of the requester's identity and confirmation of DUA acceptance.
+
+The DUA defines the conditions for responsible reuse of NMT-4K-EEG, including restrictions on participant re-identification and unauthorized redistribution, together with requirements for appropriate data-security safeguards.
 
 > [!IMPORTANT]
-> The MIT License in this GitHub repository applies to repository-authored software and documentation. It does **not** convert the controlled clinical dataset into open data. Dataset reuse is governed by the NMT-4K-EEG DUA and the access conditions associated with the Zenodo dataset record.
+> The MIT License associated with this GitHub repository applies only to the repository-authored source code, scripts, notebooks, and documentation. It does **not** apply to the NMT-4K-EEG clinical dataset. Access to and reuse of the dataset are governed by the NMT-4K-EEG Data Usage Agreement and the controlled-access conditions associated with the Zenodo dataset record.
 
 ## Code availability
 
