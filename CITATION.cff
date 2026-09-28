@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "Please cite the NMT-4K-EEG dataset and its Data Descriptor when using this repository."
 title: "NMT-4K-EEG Dataset Code and Validation Repository"
 type: software
-version: 1.0.0
+version: 1.0.2
 authors:
   - family-names: Masood
     given-names: Hira
@@ -17,5 +17,5 @@ authors:
   - family-names: Khan
     given-names: Hassan Aqeel
 repository-code: "https://github.com/dll-ncai/NMT-4k-EEG-Dataset"
-doi: "10.5281/zenodo.20757251"
-date-released: 2026-06-20
+doi: "10.5281/zenodo.21405022"
+date-released: 2026-09-28
