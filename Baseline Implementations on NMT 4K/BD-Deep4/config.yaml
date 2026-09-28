@@ -1,0 +1,61 @@
+# BD-Deep4 / NMT-4K-EEG configuration for Windows
+# IMPORTANT: single quotes keep Windows backslashes literal in YAML.
+dataset_root: 'E:\EEG Dataset\EEG\Dataset\NMT\NMT-4K-EEG'
+
+# Put generated cache/checkpoints on a drive with at least ~25-30 GB free.
+# You can change this without touching the original dataset.
+work_dir: 'E:\EEG Dataset\EEG\Dataset\NMT\NMT-4K-EEG_BDDeep4_work'
+run_name: 'bddeep4_100hz_6s_seed42'
+
+device: auto
+seed: 42
+deterministic: false
+validation_fraction: 0.15
+
+preprocessing:
+  # NMT paper: 0.5-40 Hz filtering. Downsampling to 100 Hz keeps 0.5-40 Hz
+  # while making this practical on a 6 GB laptop GPU.
+  sfreq: 100
+  l_freq: 0.5
+  h_freq: 40.0
+  cache_dtype: float16
+
+  # null = preserve the filtered signal amplitude (recommended baseline default).
+  # If an EDF contains extreme corrupted amplitudes, you can set e.g. 1000.0 uV.
+  clip_uv: null
+
+  # null = keep the whole recording. Set a number only for quick experiments.
+  max_duration_minutes: null
+
+training:
+  # 6 s = 600 samples at 100 Hz. Deep4 default topology requires >= ~441 samples.
+  window_seconds: 6.0
+  windows_per_recording: 4
+  val_windows_per_recording: 16
+
+  epochs: 60
+  batch_size: 64
+  eval_batch_size: 128
+  num_workers: 2
+
+  lr: 0.001
+  weight_decay: 0.0
+  dropout: 0.5
+  use_pos_weight: true
+  amp: false
+  grad_clip_norm: 5.0
+
+  lr_factor: 0.5
+  lr_patience: 3
+  min_lr: 0.00001
+  early_stopping_patience: 10
+
+  # latest.pt is refreshed during the epoch, so an interrupted run can resume.
+  checkpoint_every_steps: 100
+
+evaluation:
+  # Non-overlapping windows by default; the last window is also included.
+  stride_seconds: 6.0
+
+  # null = use the full recording. For a faster trial, set e.g. 100.
+  max_windows_per_recording: null

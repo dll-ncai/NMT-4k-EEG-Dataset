@@ -1,0 +1,45 @@
+# SCNet + NMT-4K-EEG configuration (Windows paths are safest in single quotes)
+dataset_root: 'E:\EEG Dataset\EEG\Dataset\NMT\NMT-4K-EEG'
+
+# Paths below are relative to this project folder.
+cache_dir: './cache/scnet_nmt4k19_100hz_7min'
+output_dir: './runs/scnet_nmt4k19'
+
+preprocess:
+  # nmt4k19 = recommended for your current NMT-4K benchmark:
+  #            19 scalp channels, 0.5-40 Hz, 100 Hz, fixed 7-min input.
+  # paper22  = closer to the 2023 SCNet paper:
+  #            19 scalp + A1/A2 -> 22 listed bipolar derivations.
+  mode: 'nmt4k19'
+  target_sfreq: 100
+  input_seconds: 420       # 7 minutes, as in the SCNet paper
+  discard_seconds: 60      # discard the first minute when enough signal is available
+  bandpass: [0.5, 40.0]    # NMT-4K benchmark protocol; set null for original SCNet minimal preprocessing
+  clip_uv: 100.0           # clip to [-100, +100] microvolts
+  cache_dtype: 'float16'   # saves ~50% disk; converted to float32 before GPU transfer
+  workers: 2               # safe starting point on Windows
+
+train:
+  seed: 42
+  val_fraction: 0.15       # follows the NMT-4K benchmark protocol
+  epochs: 60               # SCNet paper used 60
+  learning_rate: 0.001     # Adam, as in SCNet paper
+
+  # Safe starting point for RTX 3050 6 GB.
+  # Effective batch = batch_size * grad_accum_steps = 32.
+  batch_size: 8
+  grad_accum_steps: 4
+  eval_batch_size: 8
+  amp: true
+  num_workers: 2
+
+  # Original SCNet used ordinary cross entropy; keep 'none' for paper fidelity.
+  # Change to 'balanced' only as a separate experiment.
+  class_weights: 'none'
+
+  # Best model is selected by validation AUROC. Threshold is tuned only on validation.
+  threshold_tuning: 'f1'   # 'f1' or 'youden'
+  early_stopping_patience: 10
+
+  # Mid-epoch resumability: save latest state every N optimizer steps.
+  save_every_optimizer_steps: 200

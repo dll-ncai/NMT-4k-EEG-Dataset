@@ -1,0 +1,90 @@
+# Every scientific and computational choice for the recommended first run.
+paths:
+  # Change this one path if your extracted NMT-4K folder is elsewhere.
+  dataset_root: "F:/Dataset/NMT-4K-EEG"
+  metadata_csv: "data/metadata_complete_4500.csv"
+  recording_splits_csv: "data/recording_splits.csv"
+  processed_tensor_dir: "F:/processed_4s_256hz"
+  processed_manifest_csv: "data/processed_recordings.csv"
+  pretrained_checkpoint: "checkpoints/eegpt_mcae_58chs_4s_large4E.ckpt"
+  runs_dir: "outputs/runs"
+  evaluation_output_dir: "outputs/final_evaluation"
+
+split:
+  # These guards describe the attached 4,500-recording metadata file.
+  expected_train_recordings: 3500
+  expected_evaluation_recordings: 1000
+  n_folds: 5
+  validation_fold: 0
+  seed: 2026
+  stratify_by_hospital: true
+
+preprocessing:
+  target_sfreq: 256.0
+  window_seconds: 4.0
+  stride_seconds: 4.0
+  low_cut_hz: 0.5
+  high_cut_hz: 40.0
+  crop_start_seconds: 0.0
+  # Null means use the complete recording; the old arbitrary 21-minute cap is gone.
+  max_duration_seconds: null
+  # Keep these null for the first run: abnormal high amplitudes may be clinical signal.
+  reject_max_abs_uv: null
+  reject_flat_std_uv: null
+  strict_complete_cohort: true
+  overwrite: false
+
+model:
+  adapter: "spatial_temporal"
+  temporal_kernel: 15
+  adapter_dropout: 0.25
+  feature_dropout: 0.25
+  max_norm_adapter: 1.0
+  # Attention MIL learns which windows support a recording-level decision.
+  aggregation: "attention"
+  topk_fraction: 0.25
+  # Abort if a wrong/incompatible base checkpoint restores too little EEGPT.
+  minimum_encoder_coverage: 0.95
+
+training:
+  run_name: "eegpt_nmt_v2_attention_seed2026"
+  allow_existing_run: false
+  # To continue an interrupted run, set this to that run's outputs/.../last.pt.
+  resume_checkpoint: null
+  seed: 2026
+  deterministic: true
+  amp: true
+  epochs: 40
+  warmup_epochs: 5
+  early_stopping_patience: 10
+  minimum_improvement: 0.0001
+  # Each batch contains 2 recordings x 8 windows = 16 EEGPT forward inputs.
+  recording_batch_size: 2
+  train_windows_per_recording: 8
+  validation_recording_batch_size: 1
+  validation_windows_per_recording: 32
+  # Zero performs one final all-window validation pass after model selection.
+  calibration_windows_per_recording: 0
+  gradient_accumulation_steps: 4
+  encode_chunk_size: 16
+  num_workers: 0
+  head_learning_rate: 0.0005
+  encoder_learning_rate: 0.00002
+  weight_decay: 0.05
+  layer_decay: 0.75
+  minimum_lr_ratio: 0.05
+  gradient_clip_norm: 1.0
+  # First learn the new adapter/head, then fine-tune only EEGPT's highest blocks.
+  freeze_encoder_epochs: 5
+  unfreeze_last_n_blocks: 2
+  # AUROC is threshold-independent; threshold selection remains a separate step.
+  selection_metric: "auroc"
+  threshold_objective: "balanced_accuracy"
+
+evaluation:
+  # Zero means use every four-second window in every official evaluation recording.
+  windows_per_recording: 0
+  recording_batch_size: 1
+  encode_chunk_size: 16
+  num_workers: 0
+  bootstrap_samples: 2000

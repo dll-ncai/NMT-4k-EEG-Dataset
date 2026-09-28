@@ -1,0 +1,13 @@
+# Run in Anaconda PowerShell Prompt from the project directory.
+
+Set-ExecutionPolicy -Scope Process Bypass
+.\install_windows.ps1
+
+conda activate bdtcn-nmt
+
+python 01_check_setup.py
+python 02_validate_dataset.py --config config.yaml
+python 03_build_cache.py --config config.yaml
+python 04_train.py --config config.yaml --smoke-test
+python 04_train.py --config config.yaml --resume auto
+python 05_evaluate.py --config config.yaml

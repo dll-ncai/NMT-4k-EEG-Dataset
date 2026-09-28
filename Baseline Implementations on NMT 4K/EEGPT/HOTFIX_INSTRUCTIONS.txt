@@ -1,0 +1,78 @@
+EEGPT-NMT v2.0.3 TRAIN-NOW / EDF HOTFIX
+================================
+
+Purpose
+-------
+This cumulative update fixes the MNE 1.8 optional-patient-metadata parser
+failure, adds non-destructive EDF diagnostics, retries only failed preprocessing
+IDs, and permits training when only evaluation EDFs are missing.
+
+Apply without losing the 4,497 completed tensors
+------------------------------------------------
+1. Close any running EEGPT-NMT Python process.
+2. Extract this ZIP directly over your existing E:\EEGPT-NMT-v2 folder.
+3. Allow Windows to replace files with the same names.
+4. Do NOT delete data\processed_4s_256hz or data\processed_recordings.csv.
+   This hotfix does not include configs\default.yaml, so your F:\Dataset path
+   and all selected hyperparameters remain unchanged.
+5. In the activated eegpt environment, from E:\EEGPT-NMT-v2, run:
+
+   python -m pip install --upgrade "mne==1.9.0"
+   python -c "import mne; print(mne.__version__)"
+
+   The printed version must be 1.9.0.
+
+6. Run:
+
+   scripts\02a_diagnose_failed_edfs.bat
+
+   Read data\edf_diagnostics.csv. Optional-metadata issues are handled by MNE
+   1.9. A status of needs_replacement, zero complete_data_records, or zero
+   mne_n_times means the EDF signal payload must be replaced from a verified
+   NMT-4K dataset copy. Never manufacture or pad missing EEG samples.
+
+7. You may start training before replacing the three evaluation EDFs. Run:
+
+   scripts\03_audit_data.bat
+   scripts\04_train.bat
+
+   The audit must show 3500/3500 training-ready and 997/1000 evaluation. Training
+   uses only internal_train and validation rows from those complete 3,500 files.
+
+8. Do not run scripts\05_final_evaluate.bat yet. It remains blocked until all
+   1,000 evaluation recordings exist.
+
+9. Later, after replacing the incomplete EDFs, run:
+
+   scripts\02b_retry_failed_preprocessing.bat
+
+   This retries only the failed IDs and merges them into the existing manifest.
+   Success ends with:
+
+   Processed recordings: 4500
+   Failures: 0
+   Official train: 3500/3500; evaluation: 1000/1000
+
+10. Re-run the audit, then perform final evaluation only after training/model
+    selection is complete:
+
+   scripts\03_audit_data.bat
+   scripts\05_final_evaluate.bat
+
+Files changed
+-------------
+- requirements.txt
+- pyproject.toml
+- README.md
+- eegpt_nmt\__init__.py
+- eegpt_nmt\preprocess.py
+- eegpt_nmt\cohort.py
+- eegpt_nmt\audit_protocol.py
+- eegpt_nmt\train.py
+- eegpt_nmt\diagnose_edfs.py
+- eegpt_nmt\verify_setup.py
+- scripts\03_audit_data.bat
+- scripts\04_train.bat
+- scripts\02a_diagnose_failed_edfs.bat
+- scripts\02b_retry_failed_preprocessing.bat
+- tests\test_edf_diagnostics.py

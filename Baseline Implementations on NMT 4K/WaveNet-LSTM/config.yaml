@@ -1,0 +1,63 @@
+# WaveNet-LSTM for NMT-4K-EEG (Windows / RTX 3050 6 GB)
+# Windows paths are single-quoted so backslashes are treated literally by YAML.
+
+data:
+  dataset_root: 'E:\EEG Dataset\EEG\Dataset\NMT\NMT-4K-EEG'
+  metadata_file: 'metadata\recordings.tsv'
+  cache_dir: 'E:\EEG Dataset\EEG\Dataset\NMT\NMT-4K-EEG\cache_wavenet_lstm'
+  manifest_file: 'manifests\nmt4k_wavenet_manifest.csv'
+
+  seed: 42
+  validation_fraction: 0.15
+
+  # NMT-4K benchmark protocol: 0.5-40 Hz. The original WaveNet-LSTM paper
+  # uses 60 s at 250 Hz, so we resample NMT-4K (native 200 Hz) to 250 Hz.
+  filter_low_hz: 0.5
+  filter_high_hz: 40.0
+  filter_order: 4
+  target_sfreq_hz: 250
+  segment_seconds: 60
+  normalization: 'zscore'
+
+  # Original paper uses the second 60 s as a time-reversed training sample.
+  time_reverse_augmentation: true
+  require_full_second_segment: true
+
+model:
+  input_channels: 20
+  window_size_samples: 500
+  wave_blocks:
+    - [16, 3, 8]
+    - [32, 3, 5]
+    - [64, 3, 3]
+    - [64, 2, 2]
+  pool_sizes: [10, 10, 10, 2]
+  wavenet_lstm_hidden: 64
+  window_lstm_hidden: 64
+  sequence_lstm_hidden: 64
+  top_dropout: 0.5
+  bottom_dropout: 0.2
+
+training:
+  max_epochs: 50
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 0.001
+  min_learning_rate: 0.0001
+  lr_reduce_factor: 0.5
+  lr_patience: 3
+  early_stopping_patience: 10
+  weight_decay: 0.0
+  max_grad_norm: 0.0
+  num_workers: 0
+  pin_memory: true
+  amp: true
+  balanced_sampling: true
+  checkpoint_every_epoch: true
+  run_dir: 'runs\wavenet_lstm_nmt4k'
+
+evaluation:
+  threshold_mode: 'fixed'   # fixed | f1 | youden
+  threshold: 0.5
+  batch_size: 4
+  num_workers: 0

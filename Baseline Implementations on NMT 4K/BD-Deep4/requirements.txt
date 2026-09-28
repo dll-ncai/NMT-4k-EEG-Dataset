@@ -1,0 +1,8 @@
+# Install PyTorch with CUDA separately FIRST (see README.md).
+numpy>=1.26,<3
+pandas>=2.2,<4
+scipy>=1.13,<2
+scikit-learn>=1.5,<2
+mne>=1.8,<2
+PyYAML>=6.0,<7
+tqdm>=4.66,<5

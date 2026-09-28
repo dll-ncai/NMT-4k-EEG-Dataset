@@ -1,0 +1,21 @@
+# Install the CUDA-enabled PyTorch trio first with the official cu128 index:
+# python -m pip install torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0 --index-url https://download.pytorch.org/whl/cu128
+# Then install this file:
+# python -m pip install -r requirements_nmt_cuda128.txt -c constraints_nmt_cuda128.txt
+
+# NumPy 1.x is intentional. The supplied pandas/h5py/MNE-era environment contains
+# extensions built before the NumPy 2 ABI break.
+numpy==1.26.4
+pandas==2.2.3
+scipy==1.15.3
+scikit-learn==1.5.2
+h5py==3.9.0
+mne==1.4.2
+
+# LaBraM imports the legacy timm registry/layer modules. 0.9.16 keeps those APIs
+# while being a safer bridge to modern PyTorch than the upstream 0.4.12 pin.
+timm==0.9.16
+einops==0.6.1
+tqdm==4.65.0
+Pillow==10.4.0
+packaging==26.0

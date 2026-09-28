@@ -1,0 +1,12 @@
+# PyTorch is installed separately from the official CUDA 12.8 wheel index by
+# 00_create_environment.ps1 so an accidental CPU-only wheel is not selected.
+mne>=1.10,<1.14
+numpy>=1.26,<3
+pandas>=2.2,<3
+scipy>=1.13,<2
+scikit-learn>=1.5,<2
+matplotlib>=3.9,<4
+PyYAML>=6.0,<7
+tqdm>=4.66,<5
+psutil>=6,<8
+pytest>=8,<10

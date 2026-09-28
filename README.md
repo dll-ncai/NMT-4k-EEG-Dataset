@@ -1,18 +1,67 @@
-# NMT-4K-EEG Dataset Code and Validation Repository
+# NMT-4K-EEG: Dataset Code, Validation & Baseline Implementations
 
 [![Dataset DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21405022.svg)](https://doi.org/10.5281/zenodo.21405022)
+[![DUA](https://img.shields.io/badge/Data%20Usage%20Agreement-v1.0-7B61FF)](https://zenodo.org/records/23009612)
+[![Access](https://img.shields.io/badge/Dataset%20Access-Controlled-orange)](https://doi.org/10.5281/zenodo.21405022)
 [![Code DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20830355.svg)](https://doi.org/10.5281/zenodo.20830355)
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-Baselines-EE4C2C?logo=pytorch&logoColor=white)
 ![Jupyter](https://img.shields.io/badge/Jupyter-Notebooks-F37626?logo=jupyter&logoColor=white)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![License: MIT](https://img.shields.io/badge/Code%20License-MIT-yellow.svg)
 
-This repository contains the code, notebooks, validation routines, and saved analysis outputs used to curate, validate, package, and describe **NMT-4K-EEG**, a multimodal clinical electroencephalography dataset collected during routine hospital practice in Pakistan.
+This repository is the **code, validation, reproducibility, and baseline implementation companion** to **NMT-4K-EEG**, a curated multimodal clinical electroencephalography resource developed from routine hospital EEG examinations in Pakistan.
 
-The dataset contains continuous EEG recordings, expert event annotations for abnormal recordings, anonymized clinical EEG reports, and a predefined subject-wise training and evaluation split. The dataset itself is distributed separately through Zenodo. A fixed archival release of this code and validation repository is also available through Zenodo for reproducible citation.
+It now brings together three complementary layers of reproducible work:
 
-- **Dataset record:** [https://doi.org/10.5281/zenodo.21405022](https://doi.org/10.5281/zenodo.21405022)
-- **Code and validation repository archive:** [https://doi.org/10.5281/zenodo.20830355](https://doi.org/10.5281/zenodo.20830355)
-- **Full EDF Viewer:** [https://dll-ncai.github.io/full_edf_viewer/](https://dll-ncai.github.io/full_edf_viewer/)
+1. **Dataset engineering** — curation, predefined split construction, release packaging, cross-modal linkage, and checksum generation.
+2. **Technical validation** — EDF integrity checks, annotation validation, signal characterization, dataset statistics, and manuscript figure generation.
+3. **Baseline implementations** — end-to-end recording-level normal-vs-abnormal classification pipelines for **BD-Deep4, BD-TCN, WaveNet-LSTM, SCNet, Multi-BK-Net, LaBraM, and EEGPT**.
+
+> [!IMPORTANT]
+> The **clinical dataset files are distributed under controlled access**. The Zenodo record and metadata are publicly visible, but access to the clinical files requires an approved access request and agreement to the **NMT-4K-EEG Data Usage Agreement (DUA), version 1.0**. The DUA itself is publicly viewable.
+
+### Quick links
+
+| Resource | Link |
+|---|---|
+| NMT-4K-EEG dataset record | [doi:10.5281/zenodo.21405022](https://doi.org/10.5281/zenodo.21405022) |
+| Public Data Usage Agreement | [Zenodo DUA record](https://zenodo.org/records/23009612) · [doi:10.5281/zenodo.23009612](https://doi.org/10.5281/zenodo.23009612) |
+| Code and validation archive | [doi:10.5281/zenodo.20830355](https://doi.org/10.5281/zenodo.20830355) |
+| Full EDF Viewer | [dll-ncai.github.io/full_edf_viewer](https://dll-ncai.github.io/full_edf_viewer/) |
+
+## Contents
+
+- [Dataset at a glance](#dataset-at-a-glance)
+- [Data modalities](#data-modalities)
+- [Repository structure](#repository-structure)
+- [Notebooks](#notebooks)
+- [Scripts](#scripts)
+- [Baseline implementations](#baseline-implementations)
+- [Output directories](#output-directories)
+- [Dataset release structure](#dataset-release-structure)
+- [Installation](#installation)
+- [Recommended workflow](#recommended-workflow)
+- [Reproducibility notes](#reproducibility-notes)
+- [Data integrity verification](#data-integrity-verification)
+- [Usage notes and limitations](#usage-notes-and-limitations)
+- [Ethics and privacy](#ethics-and-privacy)
+- [Controlled data access and DUA](#controlled-data-access-and-dua)
+- [Code availability](#code-availability)
+- [Citation](#citation)
+- [License](#license)
+- [Contact](#contact)
+
+```mermaid
+flowchart LR
+    A[NMT-4K-EEG<br/>Controlled clinical dataset] --> B[Dataset curation and packaging]
+    B --> C[Integrity and technical validation]
+    C --> D[Manuscript figures and statistics]
+    A --> E[Recording-level benchmark pipelines]
+    E --> F[BD-Deep4 / BD-TCN / WaveNet-LSTM / SCNet]
+    E --> G[Multi-BK-Net / LaBraM / EEGPT]
+    F --> H[Held-out evaluation]
+    G --> H
+```
 
 ## Dataset at a glance
 
@@ -29,9 +78,10 @@ The dataset contains continuous EEG recordings, expert event annotations for abn
 | Event annotations | 77,461 expert-verified annotations for abnormal recordings |
 | Annotation format | Comma-separated value files, `.csv` |
 | Event taxonomy | 10 canonical labels organized into four broader annotation families |
-| Clinical reports | 4,500 anonymized reports in plain text, `.txt` |
+| Clinical reports | 4,500 de-identified reports in plain text, `.txt` |
 | Subject age | Six years and older |
 | Data split | Fixed subject-wise training and evaluation partitions |
+| Access model | Controlled access; DUA acceptance required before clinical files are released |
 
 The released EDF recordings remain continuous and unsegmented. No preprocessing, artifact rejection, re-referencing, or manual signal cleaning was applied before release. Physiological and non-physiological artifacts from routine clinical acquisition are therefore retained.
 
@@ -59,17 +109,18 @@ Normal recordings do not contain event annotation CSV files. Temporal overlap be
 
 ### Clinical reports
 
-Every recording is linked to an anonymized clinical report in TXT format. The reports retain the main clinical sections:
+Every recording is linked to a **de-identified clinical EEG report** in TXT format. The two contributing hospitals use related but site-specific reporting templates.
 
-- `Indication`
-- `Factual Findings`
-- `Impression`
+Typical report sections include:
 
-Reports contain recording-level clinical information. They are not explicitly aligned with individual waveform samples or event annotations.
+- **Pak-Emirates Military Hospital (PEMH):** `Indications`, `Technique`, `Factual Report`, and `Impression`
+- **Fauji Foundation Hospital (FFH):** `History`, `Procedure Status`, `EEG Description`, `EEG Classification`, and `Clinical Interpretation`
+
+The reports provide recording-level clinical context and final interpretation. They are **not temporally aligned** with individual waveform samples or event annotations and should therefore not be treated as event-level ground truth.
 
 ### Recording identifiers
 
-Files belonging to the same recording use a shared anonymized base identifier. Identifiers follow the source and year convention used during curation, for example:
+Files belonging to the same recording use a shared de-identified base identifier. Identifiers follow the source and year convention used during curation, for example:
 
 ```text
 mh_2023_0000001.edf
@@ -85,34 +136,42 @@ The same convention is used for `ffh` identifiers. The CSV file is present only 
 NMT-4K-EEG-Dataset/
 ├── notebooks/
 │   ├── 01_dataset_characterization/
-│   │   ├── Abnormality_stats.ipynb
-│   │   └── Datastats.ipynb
 │   ├── 02_data_validation/
-│   │   └── validation_data.ipynb
 │   ├── 03_technical_validation/
-│   │   ├── data_analysis_paper.ipynb
-│   │   └── Paper_Stats.ipynb
 │   └── 04_manuscript_outputs/
-│       └── final_paper_plot.ipynb
+│
 ├── Scripts/
 │   ├── Dataset Curation/
-│   │   ├── build_dataset_manifest_and_split.py
-│   │   └── package_release_files.py
 │   ├── Integrity/
-│   │   └── generate_sha256_checksums.py
 │   └── Validation/
-│       └── verify_release_structure.py
-└── Outputs/
-    ├── figures/
-    ├── nmt4k_analysis_results/
-    ├── nmt4k_event_level_stats/
-    ├── nmt4k_event_stats_out/
-    ├── nmt4k_signal_quality/
-    ├── nmt4k_step1_out/
-    ├── nmt4k_validation_out/
-    ├── Stats Ouput/
-    └── Validation Report/
+│
+├── Baseline Implementations on NMT 4K/
+│   ├── BD-Deep4/
+│   ├── BD-TCN/
+│   ├── EEGPT/
+│   ├── LaBraM/
+│   ├── Multi-BK-Net/
+│   ├── SCNet/
+│   └── WaveNet-LSTM/
+│
+├── Outputs/
+│   ├── figures/
+│   ├── nmt4k_analysis_results/
+│   ├── nmt4k_event_level_stats/
+│   ├── nmt4k_event_stats_out/
+│   ├── nmt4k_signal_quality/
+│   ├── nmt4k_step1_out/
+│   ├── nmt4k_validation_out/
+│   ├── Stats Ouput/
+│   └── Validation Report/
+│
+├── CITATION.cff
+├── LICENSE
+├── requirements.txt
+└── README.md
 ```
+
+The baseline directory contains **seven independent experiment packages**. Each package includes its own configuration, preprocessing logic, training/evaluation entry points, dependency specification, and model-specific README. Some packages also contain unit tests, audit reports, helper launchers, and troubleshooting documentation.
 
 ## Notebooks
 
@@ -303,6 +362,319 @@ This script creates a SHA-256 checksum manifest for the packaged dataset. It:
 - Uses relative paths for portability
 - Writes the checksum manifest to `metadata/sha256.txt`
 
+## Baseline implementations
+
+The repository includes seven end-to-end implementations for **recording-level Normal vs Abnormal EEG classification** on NMT-4K-EEG. These packages are intended to make model-specific preprocessing, optimization, checkpointing, aggregation, and held-out evaluation explicit and inspectable.
+
+> [!WARNING]
+> The baseline folders are **independent experiment environments**. Do not install every model's requirements into one shared Python environment. Create a separate environment per model and follow the README inside that model's folder.
+
+### Benchmark principles shared across the implementations
+
+The model packages follow the same high-level safeguards even when their architecture-specific preprocessing differs:
+
+- The released **training** and **evaluation** partitions are preserved.
+- Any internal validation subset is derived only from the released training partition.
+- The official evaluation partition is reserved for final held-out assessment.
+- **Abnormal** is treated as the positive class for binary metrics.
+- Recording-level predictions are produced from windows/crops according to the aggregation rule documented for each model.
+- Model selection and threshold selection are performed without tuning on the official evaluation labels.
+- Clinical reports and event-level annotation CSVs are not used as inputs to these recording-level binary baselines.
+- Generated caches, checkpoints, and run outputs should be stored outside the released clinical data folders whenever possible.
+
+### Baseline overview
+
+| Model | Implementation in this repository | Primary EEG input | Main pipeline |
+|---|---|---|---|
+| **BD-Deep4** | Independent PyTorch Deep ConvNet implementation | 19 scalp channels, 0.5–40 Hz, 100 Hz, 6 s windows | manifest → cache → train → recording-level evaluate |
+| **BD-TCN** | Modern Braindecode TCN adaptation retaining the published BD-TCN architecture settings | 19 scalp channels, 0.5–40 Hz, 100 Hz, 60 s windows | validate → cache → dense TCN train → evaluate |
+| **WaveNet-LSTM** | From-scratch PyTorch dual-path WaveNet-LSTM adaptation | 20-channel TCP bipolar montage, 0.5–40 Hz, 250 Hz, 60 s input | split → preprocess → train → evaluate |
+| **SCNet** | Clean PyTorch reconstruction of SCNet | default: 19 scalp channels, 100 Hz, deterministic 7 min input | setup → cache → train → evaluate |
+| **Multi-BK-Net** | Current native-PyTorch adaptation of the published multi-branch/multi-kernel network | 19 scalp channels, 100 Hz, 60 s windows | audit → preprocess → development/full training → evaluate |
+| **LaBraM** | Fine-tuning pipeline around pretrained LaBraM-base | 21 EEG/reference channels, 200 Hz, 10 s windows | preprocess → manifest → fine-tune → recording-level evaluate |
+| **EEGPT** | Fine-tuning pipeline around the released EEGPT base checkpoint with recording-level multiple-instance learning | 21 EEG/reference channels, 256 Hz, 4 s windows | verify → split → preprocess → audit → train → final evaluate |
+
+### Reference baseline results
+
+The current NMT-4K-EEG Data Descriptor reports the following single-run recording-level reference values on the 1,000-recording held-out evaluation partition. These values are **reference points**, not a promise of bit-for-bit reproduction by independently modernized implementations.
+
+| Model | Accuracy (%) | F1 (%) | Sensitivity (%) | Specificity (%) | AUROC (%) |
+|---|---:|---:|---:|---:|---:|
+| BD-Deep4 | 76.90 | 72.86 | 67.39 | 85.00 | 76.20 |
+| BD-TCN | 79.20 | 75.30 | 68.91 | 87.96 | 78.44 |
+| WaveNet-LSTM | 67.00 | 63.66 | 62.83 | 70.56 | 66.69 |
+| SCNet | 77.60 | 71.93 | 62.39 | 90.56 | 76.51 |
+| LaBraM | 80.30 | 77.33 | 73.04 | 86.48 | 88.35 |
+| EEGPT | 82.70 | 80.54 | 77.83 | 86.85 | 89.25 |
+| Multi-BK-Net | 82.60 | 78.88 | 70.65 | 92.78 | 91.46 |
+
+Differences can arise from framework versions, random initialization, pretrained checkpoint revisions, exact crop/window aggregation, threshold selection, filtering behavior, and explicit NMT-specific safety adaptations documented in each package.
+
+### Model-specific packages
+
+<details>
+<summary><b>BD-Deep4</b></summary>
+
+Path: [`Baseline Implementations on NMT 4K/BD-Deep4/`](./Baseline%20Implementations%20on%20NMT%204K/BD-Deep4/)
+
+This package contains a complete Windows/PyTorch workflow with resumable preprocessing and training:
+
+```text
+00_check_gpu.py
+01_prepare_manifest.py
+02_preprocess_cache.py
+03_train.py
+04_evaluate.py
+05_smoke_test_model.py
+config.yaml
+nmt_deep4/
+requirements.txt
+run_pipeline.bat
+setup_windows.bat
+```
+
+The implementation uses the fixed NMT split, creates internal validation from training only, caches filtered/resampled EEG once, uses mixed precision, saves resumable checkpoints, tunes the binary threshold on validation only, and aggregates window probabilities to one probability per recording.
+
+Quick start:
+
+```powershell
+cd "Baseline Implementations on NMT 4K/BD-Deep4"
+python 00_check_gpu.py
+python 01_prepare_manifest.py --config config.yaml
+python 02_preprocess_cache.py --config config.yaml
+python 03_train.py --config config.yaml
+python 04_evaluate.py --config config.yaml --split evaluation
+```
+
+</details>
+
+<details>
+<summary><b>BD-TCN</b></summary>
+
+Path: [`Baseline Implementations on NMT 4K/BD-TCN/`](./Baseline%20Implementations%20on%20NMT%204K/BD-TCN/)
+
+The package uses modern Braindecode while preserving the important published BD-TCN architecture settings, including five temporal blocks, 55 filters, kernel size 16, and the dense temporal prediction mode used by default.
+
+```text
+01_check_setup.py
+02_validate_dataset.py
+03_build_cache.py
+04_train.py
+05_evaluate.py
+bdtcn_nmt_utils.py
+config.yaml
+install_windows.ps1
+requirements.txt
+```
+
+Quick start:
+
+```powershell
+cd "Baseline Implementations on NMT 4K/BD-TCN"
+python 01_check_setup.py
+python 02_validate_dataset.py --config config.yaml
+python 03_build_cache.py --config config.yaml
+python 04_train.py --config config.yaml --resume auto
+python 05_evaluate.py --config config.yaml
+```
+
+</details>
+
+<details>
+<summary><b>EEGPT</b></summary>
+
+Path: [`Baseline Implementations on NMT 4K/EEGPT/`](./Baseline%20Implementations%20on%20NMT%204K/EEGPT/)
+
+EEGPT is organized as a Python package with explicit protocol auditing, checkpoint coverage checks, preprocessing diagnostics, tests, and Windows launchers. The pipeline uses native EEGPT four-second inputs at 256 Hz and recording-level multiple-instance learning rather than treating individual windows as independent test samples.
+
+```text
+configs/default.yaml
+checkpoints/                  # user-supplied pretrained checkpoint
+eegpt_nmt/                    # implementation package
+docs/                         # experiment plan, audit, validation documentation
+scripts/                      # ordered Windows launchers
+tests/                        # cohort/protocol/metric tests
+pyproject.toml
+requirements.txt
+```
+
+Expected pretrained checkpoint location:
+
+```text
+checkpoints/eegpt_mcae_58chs_4s_large4E.ckpt
+```
+
+Canonical run order:
+
+```text
+scripts/00_verify_setup.bat
+scripts/01_prepare_splits.bat
+scripts/02_preprocess.bat
+scripts/03_audit_data.bat
+scripts/04_train.bat
+scripts/05_final_evaluate.bat
+```
+
+The final evaluation command intentionally requires explicit confirmation so the official evaluation cohort is not used casually during development.
+
+</details>
+
+<details>
+<summary><b>LaBraM</b></summary>
+
+Path: [`Baseline Implementations on NMT 4K/LaBraM/`](./Baseline%20Implementations%20on%20NMT%204K/LaBraM/)
+
+The LaBraM package fine-tunes **LaBraM-base** on 10-second NMT windows and includes recording-balanced sampling, validation-only threshold selection, modern AMP support, environment checks, resumable training, and recording-level metric export.
+
+```text
+check_labram_environment.py
+prepare_nmt_manifest.py
+run_nmt_finetuning.py
+nmt_finetuning/
+preprocess/
+scripts/
+requirements_nmt_cuda128.txt
+constraints_nmt_cuda128.txt
+COMPATIBILITY_REPORT.md
+README.md
+README_NMT_FINETUNING.md
+```
+
+This package requires the **upstream LaBraM source and pretrained checkpoint** to be supplied separately:
+
+```text
+LaBraM/
+├── modeling_finetune.py
+└── checkpoints/
+    └── labram-base.pth
+```
+
+Typical manifest construction uses a validation subset derived from the original training partition and preserves original evaluation recordings as the final test set.
+
+</details>
+
+<details>
+<summary><b>Multi-BK-Net</b></summary>
+
+Path: [`Baseline Implementations on NMT 4K/Multi-BK-Net/`](./Baseline%20Implementations%20on%20NMT%204K/Multi-BK-Net/)
+
+This is the most extensive standalone package in the baseline collection. It includes dataset auditing, resumable preprocessing, low-memory training helpers, optimized resume scripts, unit tests, paper-protocol documentation, validation reports, results guidance, and troubleshooting notes.
+
+```text
+00_create_environment.ps1
+01_verify_install.ps1
+02_inspect_dataset.ps1
+03_preprocess.ps1
+04_train.ps1
+05_evaluate.ps1
+06_resume_training.ps1
+07_run_all.ps1
+08_run_unit_tests.ps1
+09_resume_optimized.ps1
+config.yaml
+multibknet_nmt/
+docs/
+tests/
+requirements.txt
+THIRD_PARTY_NOTICE.md
+```
+
+The default package uses automatic mixed precision and gradient accumulation to preserve a practical effective batch size on limited-VRAM hardware. Recording-level probabilities are obtained from the model's window predictions before final metrics are computed.
+
+</details>
+
+<details>
+<summary><b>SCNet</b></summary>
+
+Path: [`Baseline Implementations on NMT 4K/SCNet/`](./Baseline%20Implementations%20on%20NMT%204K/SCNet/)
+
+The SCNet package is a PyTorch reconstruction with two preprocessing modes:
+
+- `nmt4k19` — recommended NMT-4K mode using the 19 scalp channels
+- `paper22` — optional mode reproducing the paper's 22 bipolar derivations more closely
+
+```text
+check_setup.py
+preprocess.py
+train.py
+evaluate.py
+config.yaml
+src/
+requirements.txt
+install_windows.bat
+run_pipeline.bat
+```
+
+Quick start:
+
+```powershell
+cd "Baseline Implementations on NMT 4K/SCNet"
+python check_setup.py --config config.yaml
+python preprocess.py --config config.yaml
+python train.py --config config.yaml --resume auto
+python evaluate.py --config config.yaml --threshold auto
+```
+
+</details>
+
+<details>
+<summary><b>WaveNet-LSTM</b></summary>
+
+Path: [`Baseline Implementations on NMT 4K/WaveNet-LSTM/`](./Baseline%20Implementations%20on%20NMT%204K/WaveNet-LSTM/)
+
+This package provides a from-scratch PyTorch implementation of the dual-path WaveNet-LSTM architecture adapted to the fixed NMT-4K split. It constructs the 20-channel TCP bipolar montage used by the model paper and resamples to 250 Hz so a 60-second input contains 15,000 samples.
+
+```text
+00_check_setup.py
+01_make_splits.py
+02_preprocess.py
+03_train.py
+04_evaluate.py
+config.yaml
+environment.yml
+src/
+requirements.txt
+run_pipeline.ps1
+```
+
+Quick start:
+
+```powershell
+cd "Baseline Implementations on NMT 4K/WaveNet-LSTM"
+python 00_check_setup.py --config config.yaml
+python 01_make_splits.py --config config.yaml
+python 02_preprocess.py --config config.yaml
+python 03_train.py --config config.yaml --resume auto
+python 04_evaluate.py --config config.yaml --split evaluation
+```
+
+</details>
+
+### Before running any baseline
+
+1. Obtain approved access to NMT-4K-EEG and preserve the released directory structure.
+2. Read the model-specific `README.md` completely.
+3. Update the dataset path in that model's `config.yaml` or equivalent configuration.
+4. Create a **separate environment** for that model.
+5. Run its setup/audit/smoke-test stage before preprocessing thousands of recordings.
+6. Keep the official evaluation set untouched until the development choices for that run are frozen.
+7. Save the exact configuration, random seed, checkpoint identity, and software versions with the final results.
+
+### Pretrained-model requirements
+
+| Model | External pretrained model required? | Notes |
+|---|---|---|
+| BD-Deep4 | No | Trained from scratch |
+| BD-TCN | No | Trained from scratch using the documented architecture |
+| WaveNet-LSTM | No | Trained from scratch |
+| SCNet | No | Trained from scratch |
+| Multi-BK-Net | No | Trained from scratch |
+| LaBraM | **Yes** | Requires upstream LaBraM source and `labram-base.pth` |
+| EEGPT | **Yes** | Requires the released EEGPT base checkpoint |
+
+> [!NOTE]
+> Upstream source code and pretrained checkpoints are subject to their original authors' licenses and distribution terms. They are not relicensed by the MIT License of this repository.
+
 ## Output directories
 
 The `Outputs` directory contains saved tables, validation reports, and figures generated by the notebooks.
@@ -363,7 +735,10 @@ NMT-4K-EEG/
 
 ## Installation
 
-A recent Python 3 environment is recommended.
+A recent Python 3 environment is recommended for the dataset-validation notebooks and scripts.
+
+> [!IMPORTANT]
+> The commands in this section install the **root dataset/validation environment only**. Baseline implementations have model-specific dependency files and should be installed in separate environments using the instructions inside each baseline folder.
 
 ```bash
 git clone https://github.com/dll-ncai/NMT-4K-EEG-Dataset.git
@@ -449,6 +824,17 @@ The curation and packaging scripts require access to the original source archive
 5. Run the validation or analysis notebook from top to bottom.
 6. Save regenerated outputs in a separate directory to avoid overwriting included reference outputs.
 
+### For baseline users
+
+1. Obtain the dataset through the controlled-access process and verify the downloaded files.
+2. Choose one model under `Baseline Implementations on NMT 4K/`.
+3. Follow that model's local README instead of the root `requirements.txt`.
+4. Run the package's environment/GPU/setup checker first.
+5. Run preprocessing into a separate cache/output directory.
+6. Train using only the released training partition and its internally derived validation subset.
+7. Evaluate on the released evaluation partition only after model selection and threshold choices are finalized.
+8. Retain the produced config, checkpoint, predictions, and metrics for reproducibility.
+
 ## Reproducibility notes
 
 - Use the predefined training and evaluation partitions for comparable benchmarking.
@@ -459,6 +845,10 @@ The curation and packaging scripts require access to the original source archive
 - Treat clinical reports as recording-level text and not as event-level ground truth.
 - Treat annotation counts as annotation density and not as a direct measure of clinical disease burden.
 - The released EDF files are raw clinical recordings. Benchmark-specific filtering does not modify the released data.
+- Treat each baseline package as a separate experiment environment; record its exact package versions and configuration.
+- Do not compare window-level and recording-level metrics as if they were equivalent; the primary benchmark is recording-level classification.
+- For pretrained models, record the exact checkpoint filename/hash and loading coverage reported by the package.
+- Any model-specific deviation from the original architecture paper or from the common NMT benchmark protocol should be documented explicitly.
 
 ## Data integrity verification
 
@@ -508,49 +898,66 @@ The dataset was assembled retrospectively from routine diagnostic EEG records. T
 - Institutional Review Board of Pak-Emirates Military Hospital, Approval No. `51214MH`
 - Institutional Review Board of Fauji Foundation Hospital, Approval No. `2024-IRB-A-56/56`
 
-Written informed consent was obtained before EEG acquisition. For participants under 18 years of age, consent was obtained from a parent or legal guardian.
+Written informed consent for the research use and sharing of de-identified clinical EEG data was obtained from adult participants; for participants under 18 years of age, consent was obtained from a parent or legal guardian.
 
-Direct identifiers were removed from EDF headers, file names, annotation files, and clinical reports before release. Age and recorded gender were retained as limited demographic variables. A shared anonymized identifier links the signal, report, and annotation file when available.
+Direct identifiers were removed from EDF headers, file names, annotation files, and clinical reports before release. Age and recorded sex were retained as limited demographic variables (the released metadata field is named `gender`). A shared de-identified identifier links the signal, report, and annotation file when available.
 
-## Data access
+## Controlled data access and DUA
 
-The dataset is deposited on Zenodo:
+NMT-4K-EEG contains **de-identified clinical human data** and is distributed under **controlled access**.
 
-- **Repository:** Zenodo
-- **Version:** 1.2
-- **DOI:** [10.5281/zenodo.21405022](https://doi.org/10.5281/zenodo.21405022)
-- **Landing page:** [https://zenodo.org/records/21405022](https://zenodo.org/records/21405022)
+- **Dataset record:** [https://doi.org/10.5281/zenodo.21405022](https://doi.org/10.5281/zenodo.21405022)
+- **Dataset version:** 1.2
+- **Public DUA:** [https://zenodo.org/records/23009612](https://zenodo.org/records/23009612)
+- **DUA DOI:** [https://doi.org/10.5281/zenodo.23009612](https://doi.org/10.5281/zenodo.23009612)
 
-Please consult the Zenodo landing page for the current access conditions, dataset license, and usage restrictions.
+The Zenodo dataset record and metadata remain publicly accessible, while the clinical dataset files are restricted. Prospective users must submit an access request through Zenodo and agree to the **NMT-4K-EEG Data Usage Agreement (DUA), version 1.0** before access can be granted.
+
+The DUA defines the conditions for responsible reuse, including restrictions on participant re-identification and unauthorized redistribution and requirements for appropriate data-security safeguards.
+
+> [!IMPORTANT]
+> The MIT License in this GitHub repository applies to repository-authored software and documentation. It does **not** convert the controlled clinical dataset into open data. Dataset reuse is governed by the NMT-4K-EEG DUA and the access conditions associated with the Zenodo dataset record.
 
 ## Code availability
 
 This GitHub repository provides the custom code used for:
 
-- Dataset curation and split creation
-- Release packaging
-- File and cross-modal integrity checks
-- EDF readability and signal characterization
-- Annotation timing and channel checks
-- Label normalization and annotation summaries
-- Technical validation figures
-- Exploratory baseline analysis
+- Dataset curation and fixed split construction
+- Release packaging and cross-modal file organization
+- EDF, metadata, annotation, and linkage validation
+- Signal and spectral characterization
+- Annotation timing, channel, and taxonomy checks
+- Dataset statistics and manuscript figure generation
 - SHA-256 checksum generation
+- Reproducible recording-level baseline implementations for seven EEG architectures
 
-A fixed archival release of this code and validation repository has been deposited on Zenodo:
+The included baseline implementations are:
 
-- **Repository:** Zenodo
-- **Version:** v1.0.0
-- **DOI:** [10.5281/zenodo.20830355](https://doi.org/10.5281/zenodo.20830355)
-- **Landing page:** [https://zenodo.org/records/20830355](https://zenodo.org/records/20830355)
+```text
+BD-Deep4
+BD-TCN
+EEGPT
+LaBraM
+Multi-BK-Net
+SCNet
+WaveNet-LSTM
+```
 
-The Full EDF Viewer used during clinical review and annotation is available at:
+A fixed archival release of the code and validation repository is available through Zenodo:
+
+- **Code archive DOI:** [10.5281/zenodo.20830355](https://doi.org/10.5281/zenodo.20830355)
+- **Code archive landing page:** [https://zenodo.org/records/20830355](https://zenodo.org/records/20830355)
+
+The browser-based **Full EDF Viewer** used during EEG visualization and annotation is available at:
 
 [https://dll-ncai.github.io/full_edf_viewer/](https://dll-ncai.github.io/full_edf_viewer/)
 
+> [!NOTE]
+> When a new GitHub release adds or changes baseline implementations, create a corresponding Zenodo software version so the archival snapshot and GitHub repository remain synchronized.
+
 ## Citation
 
-Please cite the dataset when using NMT-4K-EEG. Please also cite the code and validation repository when using or referring to the scripts, notebooks, validation workflow, or reproduced figures. The citation exported by each Zenodo record should be treated as the authoritative citation.
+Please cite the **dataset** when using NMT-4K-EEG. Please also cite the **code and validation repository** when using or referring to the scripts, notebooks, validation workflow, baseline implementations, or reproduced figures. For LaBraM, EEGPT, and other literature-derived architectures, also cite the corresponding original model paper as described in the model-specific README. The citation exported by each Zenodo record should be treated as the authoritative citation.
 
 ### Dataset citation
 
@@ -583,11 +990,17 @@ Please cite the dataset when using NMT-4K-EEG. Please also cite the code and val
 
 ## License
 
-The source code, scripts, notebooks, and documentation in this repository are licensed under the [MIT License](LICENSE).
+The repository-authored source code, scripts, notebooks, and documentation are licensed under the [MIT License](LICENSE), unless a subdirectory explicitly states otherwise.
 
 Copyright (c) 2026 Deep Learning Lab - NCAI.
 
-The MIT License applies only to the software and documentation contained in this GitHub repository and the archived code release. The NMT-4K-EEG dataset is distributed separately through Zenodo. Dataset access and reuse are governed by the license and conditions provided on the [dataset Zenodo record](https://doi.org/10.5281/zenodo.21405022).
+The following are **not** covered by the repository MIT License:
+
+- The NMT-4K-EEG clinical dataset files, which are distributed separately under controlled access and governed by the [NMT-4K-EEG DUA](https://zenodo.org/records/23009612)
+- Third-party upstream source code included or referenced by a baseline package
+- Pretrained LaBraM or EEGPT checkpoints and other externally distributed model weights
+
+Always review the applicable upstream license before redistributing third-party code or pretrained weights.
 
 ## Contact
 

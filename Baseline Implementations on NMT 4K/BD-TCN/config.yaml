@@ -1,0 +1,73 @@
+paths:
+  dataset_root: 'E:\EEG Dataset\EEG\Dataset\NMT\NMT-4K-EEG'
+  cache_dir: 'E:\EEG Dataset\EEG\Dataset\NMT\BDTCN_cache'
+  output_dir: './runs/bdtcn_nmt4k'
+
+data:
+  metadata_relative_path: 'metadata/recordings.tsv'
+  validation_fraction: 0.15
+  split_seed: 42
+  positive_label: 'Abnormal'
+  channels:
+    - Fp1
+    - Fp2
+    - F7
+    - F3
+    - Fz
+    - F4
+    - F8
+    - T3
+    - C3
+    - Cz
+    - C4
+    - T4
+    - T5
+    - P3
+    - Pz
+    - P4
+    - T6
+    - O1
+    - O2
+
+preprocessing:
+  target_sfreq: 100.0
+  l_freq: 0.5
+  h_freq: 40.0
+  max_duration_minutes: 20.0
+  skip_first_seconds: 60.0
+  minimum_remaining_seconds: 60.0
+  clip_microvolts: 800.0
+  cache_dtype: 'float32'
+
+windowing:
+  window_seconds: 60.0
+  # 5070 samples = 6000 - 931 + 1, where 931 is the receptive field
+  # of the 5-block, kernel-size-16 TCN. This gives overlapping windows.
+  stride_samples: 5070
+  short_recording_padding: 'reflect'
+
+model:
+  variant: 'paper_dense'
+  n_blocks: 5
+  n_filters: 55
+  kernel_size: 16
+  drop_prob: 0.05270154233150525
+
+training:
+  seed: 42
+  max_epochs: 35
+  batch_size: 8
+  gradient_accumulation_steps: 8
+  num_workers: 0
+  learning_rate: 0.0011261049710243193
+  weight_decay: 5.83730537673086e-07
+  l2_penalty: 1.7491630095065614e-08
+  gradient_clip_norm: 0.25
+  mixed_precision: true
+  class_weighting: false
+  selection_metric: 'auroc'
+  early_stopping_patience: 0
+
+evaluation:
+  prediction_batch_size: 16
+  threshold_metric: 'f1'

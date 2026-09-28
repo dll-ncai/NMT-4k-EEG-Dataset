@@ -1,0 +1,103 @@
+project:
+  name: multibknet_nmt4k
+
+dataset:
+  root: 'G:\Dataset\NMT-4K-EEG'
+  train_folder: train
+  evaluation_folder: evaluation
+  metadata_tsv: metadata/recordings.tsv
+  expected_counts:
+    train:
+      normal: 2796
+      abnormal: 704
+    evaluation:
+      normal: 540
+      abnormal: 460
+  # Current NMT-4K release: 19 scalp channels, linked-ear acquisition reference.
+  # The old TUH paper configuration used these 19 plus A1 and A2 (21 total).
+  channels:
+    - C3
+    - C4
+    - Cz
+    - F3
+    - F4
+    - F7
+    - F8
+    - Fp1
+    - Fp2
+    - Fz
+    - O1
+    - O2
+    - P3
+    - P4
+    - Pz
+    - T3
+    - T4
+    - T5
+    - T6
+
+paths:
+  output_root: 'G:\Dataset\NMT-4K-EEG\multibknet_nmt_outputs'
+  cache_dir: cache
+  audit_dir: audit
+  runs_dir: runs
+
+preprocessing:
+  crop_start_seconds: 60
+  max_duration_seconds: 1200
+  target_sfreq: 100
+  clip_microvolts: 800
+  reference: average
+  window_seconds: 60
+  window_stride_seconds: 60
+  include_final_overlapping_window: true
+  # If the first-minute crop would leave no full window, use the recording's
+  # last real 60 seconds. Recordings shorter than 60 seconds are still excluded.
+  short_recording_policy: last_complete_window
+  fail_on_evaluation_error: true
+  allow_training_exclusions: true
+
+model:
+  n_classes: 2
+  total_first_block_filters: 35
+  temporal_kernel_samples: [200, 25, 13, 7, 3]
+  first_pool_length: 50
+  first_pool_stride: 15
+  later_filter_length: 20
+  later_pool_length: 3
+  later_pool_stride: 1
+  stride_before_pool: 3
+  dropout: 0.5029593396661691
+  activation: gelu
+  normalization: group
+  fourth_block: true
+  fourth_block_broader: true
+
+training:
+  seed: 2026
+  device: cuda
+  mode: development_then_full
+  validation_fraction: 0.20
+  maximum_epochs: 42
+  checkpoint_metric: recording_auroc
+  micro_batch_size: 16
+  gradient_accumulation_steps: 4
+  validation_batch_size: 32
+  num_workers: 0
+  pin_memory: true
+  amp: true
+  deterministic: true
+  optimizer: AdamW
+  learning_rate: 0.0031414364096615
+  beta1: 0.5
+  beta2: 0.999
+  weight_decay: 1.8397405899531204e-05
+  class_weighting: balanced_windows
+
+evaluation:
+  checkpoint: final_full_train.pt
+  batch_size: 32
+  num_workers: 0
+  threshold: 0.5
+  save_window_predictions: true
+  plot_curves: true

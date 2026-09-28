@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eegpt-nmt-v2"
+version = "2.0.3"
+description = "Leakage-safe recording-level EEGPT fine-tuning on NMT-4K"
+requires-python = ">=3.10,<3.13"
+
+[tool.setuptools.packages.find]
+include = ["eegpt_nmt*"]
