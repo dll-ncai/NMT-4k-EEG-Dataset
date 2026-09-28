@@ -841,7 +841,7 @@ The curation and packaging scripts require access to the original source archive
 - Do not use the evaluation partition for model selection or hyperparameter tuning.
 - Create an internal validation subset only from the training partition when needed.
 - Report preprocessing, montage handling, filtering, normalization, segmentation, and label mapping decisions.
-- Parse event clock times using a datetime library, especially for recordings that cross midnight.
+- Parse event clock times using a datetime library. No released recording crosses midnight, so date-rollover correction is not required for the current release.
 - Treat clinical reports as recording-level text and not as event-level ground truth.
 - Treat annotation counts as annotation density and not as a direct measure of clinical disease burden.
 - The released EDF files are raw clinical recordings. Benchmark-specific filtering does not modify the released data.
