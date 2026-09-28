@@ -898,7 +898,7 @@ The dataset was assembled retrospectively from routine diagnostic EEG records. T
 - Institutional Review Board of Pak-Emirates Military Hospital, Approval No. `51214MH`
 - Institutional Review Board of Fauji Foundation Hospital, Approval No. `2024-IRB-A-56/56`
 
-Written informed consent for the research use and sharing of de-identified clinical EEG data was obtained from adult participants; for participants under 18 years of age, consent was obtained from a parent or legal guardian.
+Written informed consent for the research use and data sharing was obtained from participants. For participants under 18 years of age, consent was obtained from a parent or legal guardian.
 
 Direct identifiers were removed from EDF headers, file names, annotation files, and clinical reports before release. Age and recorded sex were retained as limited demographic variables (the released metadata field is named `gender`). A shared de-identified identifier links the signal, report, and annotation file when available.
 
