@@ -949,8 +949,8 @@ WaveNet-LSTM
 
 A fixed archival release of the code and validation repository is available through Zenodo:
 
-- **Code archive DOI:** [10.5281/zenodo.20830355](https://doi.org/10.5281/zenodo.20830355)
-- **Code archive landing page:** [https://zenodo.org/records/20830355](https://zenodo.org/records/20830355)
+- **Code archive DOI:** [10.5281/zenodo.23014165](https://zenodo.org/records/23014165)
+- **Code archive landing page:** [https://zenodo.org/records/23014165](https://zenodo.org/records/23014165)
 
 The browser-based **Full EDF Viewer** used during EEG visualization and annotation is available at:
 
