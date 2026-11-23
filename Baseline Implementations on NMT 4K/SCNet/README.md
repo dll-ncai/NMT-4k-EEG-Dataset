@@ -185,11 +185,11 @@ For transparency, `evaluation_metrics.json` contains both metrics using the vali
 
 The NMT-4K-EEG paper reports the following SCNet single-run held-out baseline:
 
-- Accuracy: 77.60%
-- F1: 71.93%
-- Sensitivity: 62.39%
-- Specificity: 90.56%
-- AUROC: 76.51%
+- Accuracy: 80.00%
+- F1: 75.06%
+- Sensitivity: 65.43%
+- Specificity: 92.41%
+- AUROC: 86.82%
 
 Do not expect byte-for-byte or metric-identical reproduction solely from the two papers. The current NMT-4K paper states that model-specific cropping/segmentation, optimization, checkpoint selection, threshold selection, and recording-level aggregation are contained in its accompanying code repository; not all those details are specified in the manuscript text. This package therefore makes every adaptation/assumption explicit.
 

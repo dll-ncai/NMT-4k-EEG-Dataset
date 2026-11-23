@@ -319,11 +319,11 @@ The NMT-4K-EEG paper reports the following single-run BD-TCN reference on its
 held-out evaluation partition:
 
 ```text
-Accuracy    79.20%
-F1          75.30%
-Sensitivity 68.91%
-Specificity 87.96%
-AUROC       78.44%
+Accuracy    83.00%
+F1          79.95%
+Sensitivity 73.70%
+Specificity 90.93%
+AUROC       90.50%
 ```
 
 Do not expect an independently modernized implementation to reproduce every

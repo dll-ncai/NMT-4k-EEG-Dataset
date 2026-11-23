@@ -75,11 +75,12 @@ flowchart LR
 | Channels | 19 scalp channels using the International 10-20 system |
 | Sampling frequency | 200 Hz |
 | Acquisition resolution | Native 12-bit acquisition |
-| Event annotations | 77,461 expert-verified annotations for abnormal recordings |
+| Event annotations | 74,391 event annotations across 1,164 abnormal recordings in the corrected package, including 668 artifact annotations |
 | Annotation format | Comma-separated value files, `.csv` |
 | Event taxonomy | 10 canonical labels organized into four broader annotation families |
 | Clinical reports | 4,500 de-identified reports in plain text, `.txt` |
-| Subject age | Six years and older |
+| Recorded age | 6–95 years |
+| Recorded sex | 2,935 male (65.22%) and 1,565 female (34.78%) |
 | Data split | Fixed subject-wise training and evaluation partitions |
 | Access model | Controlled access; DUA acceptance required before clinical files are released |
 
@@ -404,9 +405,11 @@ The current NMT-4K-EEG Data Descriptor reports the following single-run recordin
 | BD-TCN | 83.00 | 79.95 | 73.70 | 90.93 | 90.50 |
 | WaveNet-LSTM | 73.30 | 66.16 | 56.74 | 87.41 | 81.83 |
 | SCNet | 80.00 | 75.06 | 65.43 | 92.41 | 86.82 |
-| LaBraM | 80.30 | 77.33 | 73.04 | 86.48 | 88.35 |
-| EEGPT | 82.70 | 80.54 | 77.83 | 86.85 | 89.25 |
-| Multi-BK-Net | 82.60 | 78.88 | 70.65 | 92.78 | 91.46 |
+| LaBraM | 76.90 | 73.54 | 69.78 | 82.96 | 84.92 |
+| EEGPT | 80.40 | 76.33 | 68.70 | 90.37 | 87.88 |
+| Multi-BK-Net | 81.50 | 77.79 | 70.43 | 90.93 | 89.96 |
+
+These are the reference scores in the revised manuscript. BD-Deep4 uses the previously reported aggregate result. Model configurations and archived outputs may correspond to different runs.
 
 Differences can arise from framework versions, random initialization, pretrained checkpoint revisions, exact crop/window aggregation, threshold selection, filtering behavior, and explicit NMT-specific safety adaptations documented in each package.
 
@@ -732,6 +735,8 @@ NMT-4K-EEG/
     ├── report_linkage.tsv
     └── sha256.txt
 ```
+
+The corrected package has one row per recording in `metadata/recordings.tsv`. The revised metadata adds `duration_total_sec`, calculated as `60 × duration_min + duration_sec`. The original minute and second components are retained for compatibility. Check the version on Zenodo when downloading the files.
 
 ## Installation
 
